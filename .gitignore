@@ -20,7 +20,8 @@ yarn-error.log*
 *.sln
 *.sw?
 
-
 # Python
 __pycache__/
 .ipynb_checkpoints
+
+preprocess/
