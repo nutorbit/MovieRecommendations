@@ -1,6 +1,6 @@
 <template>
   <div class='centered'>
-    <div style='padding: 20vh; box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); border-radius: 30px;'>
+    <div style='padding: 20vh;' class='box'>
       <h1>Movie Recommendation</h1>
       <el-autocomplete 
         v-model='search'
@@ -34,7 +34,7 @@ export default {
     ...mapActions(['loadNames', 'loadRecommend']),
     createFilter(queryString) {
       return (link) => {
-        return (link.title.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        return (link.title.toLowerCase().includes(queryString.toLowerCase()) == true);
       };
     },
     querySearch(queryString, cb) {
@@ -44,7 +44,6 @@ export default {
     },
     handleSelect(item){
       this.loadRecommend(item.idx)
-      this.$router.push({'name': 'display'})
     }
   },
   mounted() {
@@ -60,6 +59,11 @@ export default {
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+}
+.box {
+  /* padding: 20vh;  */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); 
+  border-radius: 30px;
 }
 </style>
 
