@@ -15,7 +15,7 @@ export default new Vuex.Store({
     popular: null
   },
   mutations: {
-    loadNames(state){
+    initMovie(state){
       axios.get(URL+'/getNames').then((res) => {
         state.movie_name = res.data.list_name
       })
@@ -56,8 +56,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loadNames(context){
-      context.commit('loadNames')
+    initMovie(context){
+      context.commit('initMovie')
     },
     loadRecommend(context, _id){
       context.commit('loadRecommend', _id)

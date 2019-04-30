@@ -125,7 +125,7 @@ def test():
 
 @app.route('/getNames', methods=['GET', 'POST'])
 def getNames():
-    print('Get Names')
+    # print('Get Names')
     return json.dumps({
         "list_name": name_all
     })
@@ -137,7 +137,7 @@ def getSimilar():
             id: xxx
         }
     '''
-    print('getSimilar')
+    # print('getSimilar')
     req = __getRequest()
     _id = __getSimilar(dict_features[int(req['id'])])
     results = list(map(__getInfo, _id))
@@ -148,7 +148,7 @@ def getSimilar():
 
 @app.route('/getRandom', methods=['GET', 'POST'])
 def getRandom():
-    _id = __getRandom(5)
+    _id = __getRandom(10)
     results = list(map(__getInfo, _id))
     return json.dumps({
         "result": results

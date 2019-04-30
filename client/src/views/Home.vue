@@ -1,17 +1,19 @@
 <template>
   <div class='centered'>
     <div style='padding: 20vh;' class='box'>
-      <h1>Movie Recommendation</h1>
-      <el-autocomplete 
-        v-model='search'
-        :fetch-suggestions="querySearch"
-        placeholder="Input name"
-        :trigger-on-focus="false"
-        value-key='title'
-        @select="handleSelect"
-      >
-    
-      </el-autocomplete>
+      <div style='opacity: 1;'>
+        <h1>Movie Recommendation</h1>
+        <el-autocomplete 
+          v-model='search'
+          :fetch-suggestions="querySearch"
+          placeholder="Input name"
+          :trigger-on-focus="false"
+          value-key='title'
+          @select="handleSelect"
+        >
+      
+        </el-autocomplete>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +33,7 @@ export default {
     ...mapGetters(['getNames'])
   },
   methods: {
-    ...mapActions(['loadNames', 'loadRecommend']),
+    ...mapActions(['initMovie', 'loadRecommend']),
     createFilter(queryString) {
       return (link) => {
         return (link.title.toLowerCase().includes(queryString.toLowerCase()) == true);
@@ -47,7 +49,7 @@ export default {
     }
   },
   mounted() {
-    this.loadNames()
+    this.initMovie()
   }
 }
 </script>
@@ -64,6 +66,7 @@ export default {
   /* padding: 20vh;  */
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); 
   border-radius: 30px;
+  /* background: rgba(48,49,51,.75); */
 }
 </style>
 

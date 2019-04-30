@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <nprogress-container />
-    <router-view/>
+    <div class='container'>
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -12,6 +13,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #303133;
+  color: #303133; 
 }
+
+body {
+  // background-image: url('./assets/background.jpg');
+}
+
 </style>
