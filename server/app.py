@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 import pickle
 import numpy as np
+import pandas as pd
 import json
 
 # initial server
@@ -20,6 +21,7 @@ CORS(app)
 .##.....##.##.....##.##.....##.##.......##......
 .##.....##..#######..########..########.########
 """
+ratings = pd.read_csv('./data/ratings.csv')
 features = pickle.load(open('./data/preprocess/processed_infos.p', 'rb'))
 info = pickle.load(open( "./data/preprocess/infos_tmdb.p", "rb" ))
 text = pickle.load(open('./data/preprocess/texts_gpt2.p', 'rb'))
@@ -30,6 +32,10 @@ id_text     = set(text.keys())
 
 id_all      = id_features.intersection(id_info).intersection(id_text)
 id_all      = sorted(id_all)
+
+ratings = ratings.loc[ratings.movieId.isin(id_all)]
+counting = ratings.groupby(['movieId']).size().reset_index()
+counting.columns = ['movieId', 'count']
 
 dict_features = {}
 for i in tqdm(id_all):
@@ -50,14 +56,14 @@ def transform(obj):
     tmp = np.append(tmp, obj['vote_count'])
     return tmp
 
-def getMovie(n=5):
+def __getRandom(n=6):
     # random index
     _id = id_all.copy()
     np.random.shuffle(_id)
     _id = _id[:n]
-    movies_info = list(map(lambda i: dict_features[i], _id))
+    # movies_info = list(map(lambda i: dict_features[i], _id))
     
-    return movies_info
+    return _id
 
 # training
 X = []
@@ -76,7 +82,7 @@ for i in id_all:
         "idx": str(i)
     })
 
-def __getSimilar(obj, n=5):
+def __getSimilar(obj, n=6):
     _id = model.kneighbors([transform(obj)], n, return_distance=False)
     _id = np.array(id_all)[_id]
     return _id[0]
@@ -98,6 +104,9 @@ def __getInfo(_id):
         "link": link,
         "poster": poster
     }
+def __getPopular(n=5):
+    _id = counting.sort_values('count', ascending=False)['movieId'].head().values
+    return _id
 
 """
 .########...#######..##.....##.########.########
@@ -132,11 +141,26 @@ def getSimilar():
     req = __getRequest()
     _id = __getSimilar(dict_features[int(req['id'])])
     results = list(map(__getInfo, _id))
-    print(results)
+    # print(results)
     return json.dumps({
         "result": results
     })
 
+@app.route('/getRandom', methods=['GET', 'POST'])
+def getRandom():
+    _id = __getRandom(5)
+    results = list(map(__getInfo, _id))
+    return json.dumps({
+        "result": results
+    })
+
+@app.route('/getPopular', methods=['GET', 'POST'])
+def getPopular():
+    _id = __getPopular(5)
+    results = list(map(__getInfo, _id))
+    return json.dumps({
+        "result": results
+    })
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
