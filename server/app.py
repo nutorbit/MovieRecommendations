@@ -62,7 +62,7 @@ def __getRandom(n=6):
     np.random.shuffle(_id)
     _id = _id[:n]
     # movies_info = list(map(lambda i: dict_features[i], _id))
-    
+
     return _id
 
 # training
@@ -118,10 +118,6 @@ def __getPopular(n=5):
 .##.....##..#######...#######.....##....########
 """
 
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    s = 'http://image.tmdb.org/t/p/original' 
-    return 'test'
 
 @app.route('/getNames', methods=['GET', 'POST'])
 def getNames():
