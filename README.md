@@ -1,3 +1,3 @@
 # Movie Recommendation
 
-A Business Intelligence Project (2019)
+We use content-based recommendation
