@@ -1,6 +1,6 @@
 # Movie Recommendation
 
-We use content-based recommendation
+We use content-based recommendation with NLP technique
 
 ![](./images/1.png)
 
